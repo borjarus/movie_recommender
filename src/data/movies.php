@@ -1,6 +1,6 @@
 <?php
 
-$movies = [
+return [
     "Pulp Fiction",
     "Incepcja",
     "Skazani na Shawshank",
