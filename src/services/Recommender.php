@@ -2,9 +2,12 @@
 
 namespace App\services;
 
+use function PHPUnit\Framework\stringStartsWith;
+
 class Recommender
 {
     private array $movies;
+
     public function __construct()
     {
         $this->loadMovieList();
@@ -15,10 +18,25 @@ class Recommender
      * @param int $number number of random titles
      * @return array
      */
-    public function getRandomTitles(int $number = 3):array
+    public function getRandomTitles(int $number = 3): array
     {
         $r = new \Random\Randomizer();
-        return array_slice($r->shuffleArray($this->movies),0,$count);
+        return array_slice($r->shuffleArray($this->movies), 0, $number);
+    }
+
+    public function filter(array $params)
+    {
+        return array_filter($this->movies, function ($movieTitle) use ($params) {
+            $result = [];
+            foreach ($params as $filterName => $filterValue) {
+                $result[] = match ($filterName) {
+                    'letter' =>  str_starts_with(strtolower($movieTitle), strtolower($filterValue)),
+                    'withEvenNumberCharacters' =>  strlen($movieTitle) % 2 == 0
+
+                };
+            }
+            return $this->all($result);
+        });
     }
 
     /**
@@ -27,6 +45,21 @@ class Recommender
      */
     private function loadMovieList()
     {
-        $this->movies = (require(__DIR__.'/../data/movies.php') ?: []);
+        $this->movies = (require (__DIR__ . '/../data/movies.php') ?: []);
+    }
+
+    /**
+     * check if all elements in array is true
+     * @param array $arr
+     * @return bool
+     */
+    private function all(array $arr)
+    {
+        return array_reduce(
+            $arr,
+            function($result, $el) {
+                return $result && $el;
+            },
+            true);
     }
 }

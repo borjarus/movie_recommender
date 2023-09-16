@@ -7,18 +7,42 @@ use PHPUnit\Framework\TestCase;
 
 class RecommenderTest extends TestCase
 {
+    private $service;
+    protected function setUp():void
+    {
+        $this->service = new Recommender();
+
+    }
     public function testReturnsThreeRandomTitles()
     {
-        $service = new Recommender();
-        $titles = $service->getRandomTitles();
+        $titles = $this->service->getRandomTitles();
 
-        // czy zwrócona wartość to tablica
+        // is returned value is an array
         $this->assertIsArray($titles);
 
-        // czy zwrócona tablica ma dokładnie 3 elementy
+        // is returned array has exactly 3 elements
         $this->assertCount(3, $titles);
 
-        // czy tytuły są unikalne
+        // is titles are unique
         $this->assertTrue(array_unique($titles) === $titles);
+    }
+
+    public function testEveryStartitngFromWLetter()
+    {
+        $movies = $this->service->filter([
+            'letter' => 'w',
+            'withEvenNumberCharacters' => true
+        ]);
+
+        // is titles start with the letter w
+        foreach ($movies as $movie) {
+            self::assertTrue(str_starts_with(strtolower($movie), 'w'));
+        }
+
+        // is titles have an even number of characters
+        foreach ($movies as $movie) {
+            self::assertTrue(strlen($movie) % 2 == 0);
+        }
+
     }
 }
