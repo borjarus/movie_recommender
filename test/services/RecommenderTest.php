@@ -29,31 +29,31 @@ class RecommenderTest extends TestCase
 
     public function testEveryStartitngFromWLetter()
     {
-        $movies = $this->service->filter([
+        $titles = $this->service->filter([
             'letter' => 'w',
             'withEvenNumberCharacters' => true
         ]);
 
         // is titles start with the letter w
-        foreach ($movies as $movie) {
-            self::assertTrue(str_starts_with(strtolower($movie), 'w'));
+        foreach ($titles as $title) {
+            self::assertTrue(str_starts_with(strtolower($title), 'w'));
         }
 
         // is titles have an even number of characters
-        foreach ($movies as $movie) {
-            self::assertTrue(strlen($movie) % 2 == 0);
+        foreach ($titles as $title) {
+            self::assertTrue(strlen($title) % 2 == 0);
         }
     }
 
     public function testEveryWithMoreThanOneWord()
     {
-        $movies = $this->service->filter([
+        $titles = $this->service->filter([
             'withMoreThanOneWord' => true
         ]);
 
         // is titles consist of more than 1 word
-        foreach ($movies as $movie) {
-            self::assertTrue(count(explode(' ', $movie)) > 1);
+        foreach ($titles as $title) {
+            self::assertTrue(count(explode(' ', $title)) > 1);
         }
     }
 }

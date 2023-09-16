@@ -8,5 +8,6 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 COPY . .
+EXPOSE 8000/tcp
 
-CMD tail -f /dev/null
+ENTRYPOINT ["php", "-S", "0.0.0.0:8000", "src/index.php"]
