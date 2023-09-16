@@ -31,7 +31,8 @@ class Recommender
             foreach ($params as $filterName => $filterValue) {
                 $result[] = match ($filterName) {
                     'letter' =>  str_starts_with(strtolower($movieTitle), strtolower($filterValue)),
-                    'withEvenNumberCharacters' =>  strlen($movieTitle) % 2 == 0
+                    'withEvenNumberCharacters' =>  strlen($movieTitle) % 2 == 0,
+                    'withMoreThanOneWord' => count(explode(' ', $movieTitle)) > 1
 
                 };
             }

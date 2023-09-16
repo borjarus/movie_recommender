@@ -43,6 +43,17 @@ class RecommenderTest extends TestCase
         foreach ($movies as $movie) {
             self::assertTrue(strlen($movie) % 2 == 0);
         }
+    }
 
+    public function testEveryWithMoreThanOneWord()
+    {
+        $movies = $this->service->filter([
+            'withMoreThanOneWord' => true
+        ]);
+
+        // is titles consist of more than 1 word
+        foreach ($movies as $movie) {
+            self::assertTrue(count(explode(' ', $movie)) > 1);
+        }
     }
 }
